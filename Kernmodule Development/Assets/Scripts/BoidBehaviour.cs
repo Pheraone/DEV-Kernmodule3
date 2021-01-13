@@ -9,12 +9,13 @@ public class BoidBehaviour : MonoBehaviour
 
     public void Start()
     {
+        //give random velocity
         velocity = Random.insideUnitSphere * 1;
     }
 
     public void OnUpdate()
     {
-        // * Time.deltaTime
+        //* Time.deltaTime -> Else it'll move too fast
         transform.position += velocity * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity), rotationSpeed * Time.deltaTime);
     }
