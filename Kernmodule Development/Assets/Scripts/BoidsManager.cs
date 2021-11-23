@@ -13,6 +13,16 @@ public class BoidsManager : MonoBehaviour
     Vector3 v1, v2, v3;
 
 
+    [Range(1, 10)]
+    public int distanceValue = 5;
+
+    [Range(100, 10)]
+    public int speed = 75;
+
+    [Range(1, 15)]
+    public int centreOfMass = 10;
+
+
     void Start()
     {
         InitializeBoids(boid);
@@ -27,7 +37,7 @@ public class BoidsManager : MonoBehaviour
             v3 = Rule3(tempBoid);
             Debug.Log(v1);
 
-            tempBoid.velocity += (v1 + v2 + v3) / 75;
+            tempBoid.velocity += (v1 + v2 + v3) / speed;
             //Vector3 tempPosition = tempBoid.GetPosition();
             //tempPosition = tempPosition + tempBoid.velocity;
             tempBoid.OnUpdate();
@@ -41,7 +51,7 @@ public class BoidsManager : MonoBehaviour
         for (int i = 0; i < boidCount; i++)
         {
             Vector3 randomPosition = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
-            BoidBehaviour tempBoid = Instantiate(boid, randomPosition, Quaternion.identity);
+            BoidBehaviour tempBoid = Instantiate(prefab, randomPosition, Quaternion.identity);
 
             tempBoid.name = "boid" + i;
             boidList.Add(tempBoid);
@@ -69,7 +79,7 @@ public class BoidsManager : MonoBehaviour
         percievedCentreOfMass = positionStorage / (n - 1);
         //Debug.Log("positionStorage = " + positionStorage);
        // Debug.Log("Centre of mass = " + percievedCentreOfMass);
-        Vector3 returnValue = (percievedCentreOfMass - boidInstance.GetPosition()) / 10;
+        Vector3 returnValue = (percievedCentreOfMass - boidInstance.GetPosition()) / centreOfMass;
 
 
         return returnValue;
@@ -86,7 +96,7 @@ public class BoidsManager : MonoBehaviour
             if (tempBoid != boidInstance)
             {
                 Vector3 tempPosition = tempBoid.GetPosition();
-                if (Vector3.Distance(tempPosition, positionBoidInstance) < 5 )
+                if (Vector3.Distance(tempPosition, positionBoidInstance) < distanceValue )
                 {
                     c = c - (tempPosition - positionBoidInstance);
                 }
